@@ -4,7 +4,7 @@
 #include <fitsio.h>
 
 /* Alard.c */
-void        getKernelVec();
+void        getKernelVec(void);
 int         fillStamp(stamp_struct *, float *, float *);
 double      *kernel_vector(int, int, int, int, int *);
 double      *kernel_vector_PCA(int, int, int, int, int *);

@@ -20,13 +20,15 @@ code.
 
 */
 
-void getKernelVec() {
+int rPixX, rPixY;
+
+void getKernelVec(void) {
     /*****************************************************
      * Fills kernel_vec with kernel weight filter, called only once
      *****************************************************/
     int ig, idegx, idegy, nvec;
     int ren;
-    
+
     nvec = 0;
     for (ig = 0; ig < ngauss; ig++) {
         for (idegx = 0; idegx <= deg_fixe[ig]; idegx++) {

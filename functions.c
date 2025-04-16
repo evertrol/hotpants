@@ -770,10 +770,10 @@ int getStampStats3(float *data,
     */
     
     /* this came primarily from Gary Bernstein */
-    
-    extern int flcomp();
-    
-    double   bin1,binsize,maxdens,moden;
+
+	extern int flcomp(const void *, const void *);
+
+    double   bin1,binsize,maxdens;//,moden;
     double   sumx,sumxx,isd;
     double   lower,upper,mode_bin, rdat;
     int      mdat,npts;
@@ -1665,28 +1665,15 @@ double ran1(int *idum) {
 #undef IA3
 #undef IC3
 
-void quick_sort (double *list, int *index, int n) {
-    
-    int i;
-    void quick_sort_1();
-    
-    for (i = 0; i < n; i++) index [i] = i;
-    quick_sort_1 (list, index, 0, n-1);
-    
-    return;
-}
-
-
-
 void quick_sort_1(double *list, int *index, int left_end, int right_end) {
     int i,j,temp;
     double chosen;
-    
-    
+
+
     chosen = list[index[(left_end + right_end)/2]];
     i = left_end-1;
     j = right_end+1;
-    
+
     for(;;) {
         while(list [index[++i]] < chosen);
         while(list [index[--j]] > chosen);
@@ -1697,18 +1684,30 @@ void quick_sort_1(double *list, int *index, int left_end, int right_end) {
         else if (i == j) {
             ++i; break;}
         else break;
-    } 
-    
+    }
+
     if (left_end < j)  quick_sort_1 (list, index, left_end, j);
     if (i < right_end) quick_sort_1 (list, index, i, right_end);
-    
+
     return;
 }
 
+void quick_sort (double *list, int *index, int n) {
+
+    int i;
+
+    for (i = 0; i < n; i++) index [i] = i;
+    quick_sort_1 (list, index, 0, n-1);
+
+    return;
+}
+
+
 /**** comparison call for the qsort ****/
-int flcomp(x,y)
-     double *x,*y;
+int flcomp(const void *a, const void *b)
 {
+	double *x = (double *)a;
+	double *y = (double *)b;
     if (*x>*y) return(1);
     else if (*x==*y) return(0);
     else return(-1);
