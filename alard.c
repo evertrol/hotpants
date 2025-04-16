@@ -316,11 +316,11 @@ void fitKernel(stamp_struct *stamps, float *imRef, float *imConv, float *imNoise
     double d, **matrix;
     char check;
     int i,mat_size;
-    int ncomp1, ncomp2, ncomp, nbg_vec;
-    
+    int ncomp1, ncomp2, nbg_vec; // ncomp
+
     ncomp1  = nCompKer - 1;
     ncomp2  = ((kerOrder + 1) * (kerOrder + 2)) / 2;
-    ncomp   = ncomp1 * ncomp2;
+    //ncomp   = ncomp1 * ncomp2;
     nbg_vec = ((bgOrder + 1) * (bgOrder + 2)) / 2;
     
     mat_size   = ncomp1 * ncomp2 + nbg_vec + 1;
@@ -485,12 +485,12 @@ double check_stamps(stamp_struct *stamps, int nS, float *imRef, float *imNoise) 
     double d,sum=0,kmean,kstdev;
     double merit1,merit2,merit3,sig1,sig2,sig3;
     float *m1,*m2,*m3,*ks;
-    int    xc, yc, nks;
-    
+    int    nks; //xc, yc, ;
+
     double **matrix;
     int mat_size;
-    int ncomp1, ncomp2, ncomp, nbg_vec;
-    
+    int ncomp1, ncomp2, nbg_vec; //ncomp
+
     int ntestStamps;
     double       *testKerSol = NULL;
     stamp_struct *testStamps = NULL;
@@ -501,7 +501,7 @@ double check_stamps(stamp_struct *stamps, int nS, float *imRef, float *imNoise) 
     
     ncomp1  = nCompKer - 1;
     ncomp2  = ((kerOrder + 1) * (kerOrder + 2)) / 2;
-    ncomp   = ncomp1 * ncomp2;
+    //ncomp   = ncomp1 * ncomp2;
     nbg_vec = ((bgOrder + 1) * (bgOrder + 2)) / 2;
     mat_size   = ncomp1 * ncomp2 + nbg_vec + 1;
     
@@ -512,10 +512,10 @@ double check_stamps(stamp_struct *stamps, int nS, float *imRef, float *imNoise) 
     nComps      = nCompKer + 1;
     
     for (i = 0; i < nS; i++) {
-        
-        xc    = stamps[i].xss[stamps[i].sscnt];
-        yc    = stamps[i].yss[stamps[i].sscnt];
-        
+
+        //xc    = stamps[i].xss[stamps[i].sscnt];
+        //yc    = stamps[i].yss[stamps[i].sscnt];
+
         /* extract check_mat to solve one particular stamp */
         for (im = 1; im <= nComps; im++) {
             check_vec[im] = stamps[i].scprod[im];
@@ -1416,12 +1416,12 @@ void make_model(stamp_struct *stamp, double *kernelSol, float *csModel) {
     int       i1,k,ix,iy,i,xi,yi;
     double    ax,ay,coeff;
     double    *vector;
-    float     rPixX2, rPixY2;
+    //float     rPixX2, rPixY2;
     double    xf, yf;
-    
-    rPixX2   = 0.5 * rPixX;
-    rPixY2   = 0.5 * rPixY;
-    
+
+    //rPixX2   = 0.5 * rPixX;
+    //rPixY2   = 0.5 * rPixY;
+
     xi = stamp->xss[stamp->sscnt];
     yi = stamp->yss[stamp->sscnt];
     
