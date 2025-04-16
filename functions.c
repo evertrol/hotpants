@@ -974,8 +974,8 @@ int getStampStats3(float *data,
         for (i = 0, sumx = 0.; i < imax; sumx += bins[i++]);
         sumx += bins[imax] * (mode_bin-imax); /*interpolate fractional bin*/
         sumx /= goodcnt;
-        moden=sumx;
-        
+        //moden=sumx;
+
         /* find the region around mode containing half the "noise" points,
            e.g. assume that the mode is 50th percentile of the noise */
         lower = goodcnt * 0.25;
@@ -1508,35 +1508,36 @@ int hp_fits_write_subset(fitsfile *fptr, long group, long naxis, long *naxes,
                          float *data, int *status, int makeShort,
                          float bZero, float bScale,
                          int fpixelX, int fpixelY, int lpixelX, int lpixelY, int xArrayLo, int yArrayLo) {
-    
-    int   pixX, pixY, y, x;
+
+	//int   pixX
+	int y, x, pixY;
     float *dptr;
     long  fpixel[2], lpixel[2];
-    
+
     hp_fits_correct_data(data, (rPixX*rPixY), bZero, bScale, makeShort);
-    
-    pixX = lpixelX - fpixelX + 1;
+
+    // pixX = lpixelX - fpixelX + 1;
     pixY = lpixelY - fpixelY + 1;
-    
+
     fpixel[0] = fpixelX;
     lpixel[0] = lpixelX;
-    
+
     dptr = data;
     /* get to the first row */
     for (y = 0; y < yArrayLo; y++)
         for (x = 0; x < rPixX; x++, dptr++);
-    
+
     for (y = 0; y < pixY; y++) {
-        
+
         fpixel[1] = fpixelY + y;
         lpixel[1] = fpixel[1];
-        
+
         /* get to first pixel in row to write */
         for (x = 0; x < xArrayLo; x++, dptr++);
-        
+
         /* this works! */
         fits_write_subset_flt(fptr, group, naxis, naxes, fpixel, lpixel, dptr, status);
-        
+
         /* clear the row, as fits_write_subset does not increment dptr */
         for (x = xArrayLo; x < rPixX; x++, dptr++);
     }
@@ -1547,35 +1548,36 @@ int hp_fits_write_subset_int(fitsfile *fptr, long group, long naxis, long *naxes
                              int *data, int *status, int makeShort,
                              float bZero, float bScale,
                              int fpixelX, int fpixelY, int lpixelX, int lpixelY, int xArrayLo, int yArrayLo) {
-    
-    int   pixX, pixY, y, x;
+
+	// int   pixX
+	int y, x, pixY;
     int  *dptr;
     long  fpixel[2], lpixel[2];
-    
+
     hp_fits_correct_data_int(data, (rPixX*rPixY), bZero, bScale, makeShort);
-    
-    pixX = lpixelX - fpixelX + 1;
+
+    // pixX = lpixelX - fpixelX + 1;
     pixY = lpixelY - fpixelY + 1;
-    
+
     fpixel[0] = fpixelX;
     lpixel[0] = lpixelX;
-    
+
     dptr = data;
     /* get to the first row */
     for (y = 0; y < yArrayLo; y++)
         for (x = 0; x < rPixX; x++, dptr++);
-    
+
     for (y = 0; y < pixY; y++) {
-        
+
         fpixel[1] = fpixelY + y;
         lpixel[1] = fpixel[1];
-        
+
         /* get to first pixel in row to write */
         for (x = 0; x < xArrayLo; x++, dptr++);
-        
+
         /* this works! */
         fits_write_subset_int(fptr, group, naxis, naxes, fpixel, lpixel, dptr, status);
-        
+
         /* clear the row, as fits_write_subset does not increment dptr */
         for (x = xArrayLo; x < rPixX; x++, dptr++);
     }

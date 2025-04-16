@@ -26,7 +26,7 @@ void   getKernelInfo(char *);
 void   getKernel(char *, double **);
 void   fits_get_kernel_btbl(fitsfile *, double **, int);
      
-void   getKernelVec();
+void   getKernelVec(void);
 double *kernel_vector(int, int, int, int, int *);
 double make_kernel(int, int, double *);
 void   spatial_convolve(float *, int, int, float, float, double *, float *);
@@ -36,7 +36,7 @@ void   printError(int);
 int main(int argc, char **argv)
 {
    
-   int    iarg, i, j, xsize, ysize, ndelta;
+	int    iarg, i, j, xsize, ysize; //, ndelta;
    int    status=0;
    float  numKerFW=2;
    double kSum;
@@ -158,12 +158,12 @@ int main(int argc, char **argv)
       delta = (float *)realloc(delta, xsize*ysize*sizeof(float));
       memset(delta, 0, xsize*ysize*sizeof(float));
       
-      ndelta = 0;
+      //ndelta = 0;
       for (j = fwKernel-1; j < (ysize-1); j += fwKernel) {
          for (i = fwKernel-1; i < (xsize-1); i += fwKernel) {
             /* delta function in middle */
             delta[i + xsize*j] = 1.;
-            ndelta += 1;
+            //ndelta += 1;
          }
       }
    }
@@ -346,7 +346,7 @@ void fits_get_kernel_btbl(fitsfile *kPtr, double **kernelSol, int nRegion) {
 /* from alard.c */
 /* ********************************** */
 
-void getKernelVec() {
+void getKernelVec(void) {
    /*****************************************************
     * Fills kernel_vec with kernel weight filter, called only once
     *****************************************************/

@@ -381,15 +381,15 @@ void build_matrix0(stamp_struct *stamp) {
      *****************************************************/
     
     int       i,j,pixStamp,k,i1,ivecbg=0;
-    int       ncomp1, ncomp2, ncomp, nbg_vec;
+    int       ncomp1; // ncomp2, ncomp, nbg_vec;
     double    p0,q;
     double    **vec;
     
     ncomp1   = nCompKer;
-    ncomp2   = ((kerOrder + 1) * (kerOrder + 2)) / 2;
-    ncomp    = ncomp1 * ncomp2;
-    nbg_vec  = ((bgOrder + 1) * (bgOrder + 2)) / 2;
-    
+    //ncomp2   = ((kerOrder + 1) * (kerOrder + 2)) / 2;
+    //ncomp    = ncomp1 * ncomp2;
+    //nbg_vec  = ((bgOrder + 1) * (bgOrder + 2)) / 2;
+
     pixStamp = fwKSStamp * fwKSStamp;
     
     vec      = stamp->vectors;
@@ -432,23 +432,23 @@ void build_scprod0(stamp_struct *stamp, float *image) {
      * Build the right side of each stamp's least squares matrix
      *    stamp.scprod = degree of kernel fit + 1 bg term
      *****************************************************/
-    
+
     int       xc,yc,xi,yi,i1,k;
-    int       ncomp1, ncomp2, ncomp, nbg_vec;
+    int       ncomp1; //, ncomp2, ncomp, nbg_vec;
     double    p0,q;
     double **vec;
-    
+
     ncomp1  = nCompKer;
-    ncomp2  = ((kerOrder + 1) * (kerOrder + 2)) / 2;
-    ncomp   = ncomp1 * ncomp2;
-    nbg_vec = ((bgOrder + 1) * (bgOrder + 2)) / 2;
-    
+    //ncomp2  = ((kerOrder + 1) * (kerOrder + 2)) / 2;
+    //ncomp   = ncomp1 * ncomp2;
+    //nbg_vec = ((bgOrder + 1) * (bgOrder + 2)) / 2;
+
     vec = stamp->vectors;
     xi  = stamp->xss[stamp->sscnt];
     yi  = stamp->yss[stamp->sscnt];
-    
+
     /* Do eqn 4. in Alard */
-    
+
     /* Multiply each order's convolved image with reference image */
     for (i1 = 0; i1 < ncomp1; i1++) {
         p0 = 0.0;
@@ -1461,11 +1461,11 @@ int ludcmp(double **a, int n, int *indx, double *d)
 {
     int     i,imax=0,j,k;
     double  big,dum,sum,temp2;
-    double  *vv,*lvector();
-    void    lnrerror();
-    
+    double  *vv;//,*lvector(void);
+    //void    lnrerror(void);
+
     vv=(double *)malloc((n+1)*sizeof(double));
-    
+
     *d=1.0;
     for (i=1;i<=n;i++) {
         big=0.0;
