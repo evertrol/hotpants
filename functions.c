@@ -23,8 +23,11 @@ code.
 
 */
 
-/* armin */ 
-void loadxyfile(char *filename, int cmpfileflag){      
+int *mRData, dummy, verbose, savexyflag, Ncmp;
+
+
+/* armin */
+void loadxyfile(char *filename, int cmpfileflag){
     FILE *xyfile;
     int Nalloc,c;
     char line[SCRLEN];
