@@ -16,6 +16,42 @@
   
 */
 
+// Indicate to the compiler that these variables, used inside vargs(), are global
+char      *template, *image, *outim;
+float     tUThresh, tUKThresh, tLThresh, tGain, tRdnoise, iUThresh, iUKThresh, iLThresh, iGain, iRdnoise;
+char      *tNoiseIm, *iNoiseIm, *tMaskIm, *iMaskIm, *kernelImIn, *kernelImOut, *outMask;
+float     tPedestal, iPedestal;
+int       hwKernel;
+float     kerFitThresh, scaleFitThresh, minFracGoodStamps;
+float     kfSpreadMask1, kfSpreadMask2;
+int       gdXmin, gdXmax, gdYmin, gdYmax;
+int       nRegX, nRegY;
+char      *regFile;
+char      *regKeyWord;
+int       numRegKeyWord;
+int       nStampY, nStampX, useFullSS;
+int       nKSStamps, hwKSStamp;
+char      *sstampFile;
+int       findSSC;
+int       kerOrder, bgOrder;
+float     statSig, kerSigReject, kerFracMask;
+char      *forceConvolve, *photNormalize, *figMerit;
+int       sameConv, rescaleOK;
+float     fillVal, fillValNoise;
+char      *effFile, *noiseImage, *sigmaImage, *convImage;
+int       doSum, inclNoiseImage, inclSigmaImage, inclConvImage, noClobber;
+int       doKerInfo, outShort, outNShort;
+float     outBzero, outBscale, outNiBzero, outNiBscale;
+int       convolveVariance;
+int       usePCA, fwKernelPCA;
+float     **PCA;
+int       ngauss, *deg_fixe, nStamps, nS, nCompKer, nC;
+int       nComp, nCompBG, nBGVectors, nCompTotal, fwKernel, fwStamp, hwStamp, fwKSStamp, kcStep, *indx, cmpFile;
+float     *temp, *temp2, *sigma_gauss, *xcmp, *ycmp;
+double    *check_stack,*filter_x,*filter_y,**kernel_vec, **wxy,*kernel_coeffs,*kernel,**check_mat,*check_vec;
+char      version[32], xyfilename[1000];
+
+
 void vargs(int argc, char *argv[]) {
 
    int iarg, i, status=0;

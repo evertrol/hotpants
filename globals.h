@@ -24,62 +24,62 @@ typedef struct
 } stamp_struct;
 
 /* GLOBAL VARS POSSIBLY SET ON COMMAND LINE */
-char      *template, *image, *outim;
+extern char      *template, *image, *outim;
 
-float     tUThresh, tUKThresh, tLThresh, tGain, tRdnoise, iUThresh, iUKThresh, iLThresh, iGain, iRdnoise;
-char      *tNoiseIm, *iNoiseIm, *tMaskIm, *iMaskIm, *kernelImIn, *kernelImOut, *outMask;
-float     tPedestal, iPedestal;
-int       hwKernel;
-float     kerFitThresh, scaleFitThresh, minFracGoodStamps;
-float     kfSpreadMask1, kfSpreadMask2;
-int       gdXmin, gdXmax, gdYmin, gdYmax;
-int       nRegX, nRegY;
-char      *regFile;
-char      *regKeyWord;
-int       numRegKeyWord;
-int       nStampY, nStampX, useFullSS;
-int       nKSStamps, hwKSStamp;
-char      *sstampFile;
-int       findSSC;
-int       kerOrder, bgOrder;
-float     statSig, kerSigReject, kerFracMask;
-char      *forceConvolve, *photNormalize, *figMerit;
-int       sameConv, rescaleOK;
-float     fillVal, fillValNoise;
-char      *effFile, *noiseImage, *sigmaImage, *convImage;
-int       doSum, inclNoiseImage, inclSigmaImage, inclConvImage, noClobber;
-int       doKerInfo, outShort, outNShort;
-float     outBzero, outBscale, outNiBzero, outNiBscale;
-int       convolveVariance;
-int       usePCA, fwKernelPCA;
-float     **PCA;
+extern float     tUThresh, tUKThresh, tLThresh, tGain, tRdnoise, iUThresh, iUKThresh, iLThresh, iGain, iRdnoise;
+extern char      *tNoiseIm, *iNoiseIm, *tMaskIm, *iMaskIm, *kernelImIn, *kernelImOut, *outMask;
+extern float     tPedestal, iPedestal;
+extern int       hwKernel;
+extern float     kerFitThresh, scaleFitThresh, minFracGoodStamps;
+extern float     kfSpreadMask1, kfSpreadMask2;
+extern int       gdXmin, gdXmax, gdYmin, gdYmax;
+extern int       nRegX, nRegY;
+extern char      *regFile;
+extern char      *regKeyWord;
+extern int       numRegKeyWord;
+extern int       nStampY, nStampX, useFullSS;
+extern int       nKSStamps, hwKSStamp;
+extern char      *sstampFile;
+extern int       findSSC;
+extern int       kerOrder, bgOrder;
+extern float     statSig, kerSigReject, kerFracMask;
+extern char      *forceConvolve, *photNormalize, *figMerit;
+extern int       sameConv, rescaleOK;
+extern float     fillVal, fillValNoise;
+extern char      *effFile, *noiseImage, *sigmaImage, *convImage;
+extern int       doSum, inclNoiseImage, inclSigmaImage, inclConvImage, noClobber;
+extern int       doKerInfo, outShort, outNShort;
+extern float     outBzero, outBscale, outNiBzero, outNiBscale;
+extern int       convolveVariance;
+extern int       usePCA, fwKernelPCA;
+extern float     **PCA;
 
 /* GLOBAL VARS NOT SET ON COMMAND LINE */
-int       ngauss, *deg_fixe;
-float     *sigma_gauss;
+extern int       ngauss, *deg_fixe;
+extern float     *sigma_gauss;
 
-int       rPixX, rPixY;
-int       nStamps, nS, nCompKer, nC;
+extern int       rPixX, rPixY;
+extern int       nStamps, nS, nCompKer, nC;
 
-int       nComp, nCompBG, nBGVectors, nCompTotal;
+extern int       nComp, nCompBG, nBGVectors, nCompTotal;
 
-int       fwKernel, fwStamp, hwStamp, fwKSStamp, kcStep, *indx;
-int       cmpFile;
-float     *temp, *temp2;
-double    *check_stack,*filter_x,*filter_y,**kernel_vec;
-double    **wxy,*kernel_coeffs,*kernel,**check_mat,*check_vec;
-char      version[32];
+extern int       fwKernel, fwStamp, hwStamp, fwKSStamp, kcStep, *indx;
+extern int       cmpFile;
+extern float     *temp, *temp2;
+extern double    *check_stack,*filter_x,*filter_y,**kernel_vec;
+extern double    **wxy,*kernel_coeffs,*kernel,**check_mat,*check_vec;
+extern char      version[32];
 
 /* REGION SIZED */
-int       *mRData;   /* bad input data mask */
+extern int       *mRData;   /* bad input data mask */
 
 /* armin */
 /* a dummy varialbe to do some testing */
-int        dummy;
+extern int        dummy;
 /* verbose for debugging */
-int        verbose;
+extern int        verbose;
 /* cmp file stuff */
-char       xyfilename[1000];
-int        savexyflag;
-float      *xcmp,*ycmp;
-int        Ncmp;
+extern char       xyfilename[1000];
+extern int        savexyflag;
+extern float      *xcmp,*ycmp;
+extern int        Ncmp;

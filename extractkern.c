@@ -9,6 +9,8 @@
 #define max(x,y) x>y?x:y
 #define min(x,y) x<y?x:y
 
+int       rPixX, rPixY;
+
 /* globals */
 int       ngauss=3, *deg_fixe=NULL, dofullImage=0;
 float     *sigma_gauss=NULL;
