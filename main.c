@@ -545,23 +545,23 @@ int main(int argc,char *argv[]) {
             }
         }
     }
-    
+
     /* now that we know the number of regions, if we want a fits
        binary table for the kernel info, create it here */
-    
+
     if ((doKerInfo) || (kernelImOut)){
         tform = (char **)calloc(nR, sizeof(char *));
         ttype = (char **)calloc(nR, sizeof(char *));
         tunit = (char **)calloc(nR, sizeof(char *));
         for (k = 0; k < nR; k++) {
-            tform[k] = (char *)malloc(10*sizeof(char));
-            ttype[k] = (char *)malloc(10*sizeof(char));
+            tform[k] = (char *)malloc(20*sizeof(char));
+            ttype[k] = (char *)malloc(20*sizeof(char));
             tunit[k] = (char *)malloc(sizeof(char));
             strcpy(tform[k], "D10.8");
-            sprintf(ttype[k], "Region%d", k);
+            snprintf(ttype[k], 20, "Region%d", k);
             strcpy(tunit[k], "");
         }
-        
+
         if (doKerInfo) {
             /* lets try it as a layer at the **bottom** of the output difference image */
             if ( fits_insert_btbl(oPtr, (nCompTotal+1), nR, ttype, tform, tunit, "Convolution Kernel Information", 0L, &status) ||
@@ -1864,9 +1864,8 @@ int main(int argc,char *argv[]) {
     /*fits_write_key_str(oPtr, "HPVSN", version, "HOTPANTS Version", &status);*/
     
     sprintf(hKeyword, "DIFFCMD");
-    sprintf(hInfo, "%s", argv[0]);
-    for (i = 1; i < argc; i++)
-        sprintf(hInfo, "%s %s", hInfo, argv[i]);
+    for (i = 0; i < argc; i++)
+	    strlcat(hInfo, argv[i], 2048);
     fits_write_key_longstr(oPtr, hKeyword, hInfo, "", &status);
     
     fits_write_key_longstr(oPtr, "TARGET",   image,    "HOTPanTS : Input Image", &status);

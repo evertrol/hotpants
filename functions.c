@@ -9,8 +9,10 @@
 #include "globals.h"
 #include "functions.h"
 
+#define NFNAME 1010
+
 /*
-  
+
 Some of these subroutines appear originally in code created by Gary
 Bernstein for psfmatch, but have been modified and/or rewritten for
 the current software package.  In particular, the determination of
@@ -67,12 +69,12 @@ void loadxyfile(char *filename, int cmpfileflag){
 void savexy(stamp_struct *stamps, int nStamps, long xmin, long ymin, int regioncounter){
     int  sscnt,istamp;
     FILE *xyfileused,*xyfileall,*xyfileskipped;
-    char xyfilenameall[1000];
-    char xyfilenameskipped[1000];
-    
-    sprintf(xyfilenameall,"%s.all",xyfilename);
-    sprintf(xyfilenameskipped,"%s.skipped",xyfilename);
-    
+    char xyfilenameall[NFNAME];
+    char xyfilenameskipped[NFNAME];
+
+    snprintf(xyfilenameall, NFNAME, "%s.all", xyfilename);
+    snprintf(xyfilenameskipped, NFNAME, "%s.skipped", xyfilename);
+
     if (regioncounter==0) {
         xyfileused = fopen(xyfilename, "w");
         xyfileall  = fopen(xyfilenameall, "w");

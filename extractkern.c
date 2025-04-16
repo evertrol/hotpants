@@ -6,6 +6,8 @@
 
 #include "globals.h"
 
+#define NHELP 4096
+
 #define max(x,y) x>y?x:y
 #define min(x,y) x<y?x:y
 
@@ -44,22 +46,23 @@ int main(int argc, char **argv)
    float  *delta = NULL, *dconv = NULL;
    double *kernelSol = NULL;
    long   cNaxes[2];
-   char   scrStr[256], help[4096];
+   char   scrStr[256], help[NHELP];
    fitsfile *fPtr;
 
-   sprintf(help, "Usage : extractkern [options] diffimage outimage\n");
-   sprintf(help, "%sOptions:\n", help);
-   sprintf(help, "%s   [-xy x y]        : convolve kernel with delta function at x,y\n", help);
-   sprintf(help, "%s   [-nkw numkwidth] : # kernel widths for outimage size (%.1f)\n", help, numKerFW);
-   sprintf(help, "%s   [-a]             : sample entire diffimage size with delta functions\n", help);
-   sprintf(help, "%s   [-im image]      : convolve fitsfile instead of delta function\n\n", help);
-   sprintf(help, "%s   To be used in conjuntion with the diffimage produced by hotpants\n", help);   
-   sprintf(help, "%s      using the -hki option.  [-xy] convolves a delta function at\n", help);
-   sprintf(help, "%s      the image position x, y with the spatially varying kernel\n", help);
-   sprintf(help, "%s      used in the hotpants convolution.  Provides a visual realization \n", help);
-   sprintf(help, "%s      of the kernel at that position, and can be useful for cosmic ray\n", help);
-   sprintf(help, "%s      discrimination.  Also, if used with the [-im] option, one may\n", help);
-   sprintf(help, "%s      reconstruct the entire convolved image to avoid storing it on disk.\n", help);
+   snprintf(help, NHELP, "Usage : extractkern [options] diffimage outimage\n"
+	   "Options:\n"
+	   "    [-xy x y]        : convolve kernel with delta function at x,y\n"
+	   "    [-nkw numkwidth] : # kernel widths for outimage size (%.1f)\n"
+	   "    [-a]             : sample entire diffimage size with delta functions\n"
+	   "    [-im image]      : convolve fitsfile instead of delta function\n\n"
+	   "    To be used in conjuntion with the diffimage produced by hotpants\n"
+	   "       using the -hki option.  [-xy] convolves a delta function at\n"
+	   "       the image position x, y with the spatially varying kernel\n"
+	   "       used in the hotpants convolution.  Provides a visual realization \n"
+	   "       of the kernel at that position, and can be useful for cosmic ray\n"
+	   "       discrimination.  Also, if used with the [-im] option, one may\n"
+	    "       reconstruct the entire convolved image to avoid storing it on disk.\n",
+	   numKerFW);
    
    /* read in command options. j counts # of required args given */
    for (iarg=1, j=0; iarg < argc; iarg++) {

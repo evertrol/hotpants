@@ -8,6 +8,7 @@
 #define D_FILLVAL 0
 #define D_MASK    0x8000
 #define MAXDIM    2
+#define NHELP 4096
 
 void   printError(int);
 
@@ -15,13 +16,13 @@ int main(int argc, char **argv)
 {
 
    int i, iarg, nPix, anynul, status, mask;
-   char help[4096];
-   
+   char help[NHELP];
+
    fitsfile *iPtr;
    int iBitpix, iNaxis;
    long iNaxes[MAXDIM];
    float *iRData=NULL;
-   
+
    fitsfile *mPtr;
    int mBitpix, mNaxis;
    long mNaxes[MAXDIM];
@@ -34,15 +35,16 @@ int main(int argc, char **argv)
    status  = 0;
    mask    = D_MASK;
    fillVal = D_FILLVAL;
-   
-   sprintf(help, "Usage : maskim [options]\n");
-   sprintf(help, "%sRequired options:\n", help);
-   sprintf(help, "%s   [-inim fitsfile]  : input image\n", help);
-   sprintf(help, "%s   [-maskim fitsfile]: corresponding mask image\n", help);
-   sprintf(help, "%s   [-outim fitsfile] : output masked image\n\n", help);
-   sprintf(help, "%sOptions:\n", help);
-   sprintf(help, "%s   [-fi fillval]    : Value of filled pixels (%.3f)\n", help, fillVal);
-   sprintf(help, "%s   [-mask hex]      : Mask for bad pixels (0x%x)\n", help, mask);
+
+   snprintf(help, NHELP, "Usage: maskim [arguments]\n"
+	    "Required arguments:\n"
+	    "[-inim fitsfile]  : input image\n"
+	    "[-maskim fitsfile]: corresponding mask image\n"
+	    "[-outim fitsfile] : output masked image\n\n"
+	    "Optional arguments:\n"
+	    "[-fi fillval]    : Value of filled pixels (%.3f)\n"
+	    "[-mask hex]      : Mask for bad pixels (0x%x)\n",
+	    fillVal, mask);
 
    /* read in command options. j counts # of required args given */
    for (iarg=1; iarg < argc; iarg++) {
