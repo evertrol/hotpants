@@ -55,7 +55,7 @@ char      version[32], xyfilename[1000];
 void vargs(int argc, char *argv[]) {
 
    int iarg, i, status=0;
-   char help[8192], *scrStr;
+   char *scrStr;
    fitsfile *kPtr;
    int kBitpix, kNaxis;
    long kNaxes[MAXDIM];
@@ -162,136 +162,134 @@ void vargs(int argc, char *argv[]) {
    convolveVariance= D_CONVVAR;
    usePCA          = D_USEPCA;
    
-   sprintf(help, "Usage:  hotpants [options]\n");
-   
-   sprintf(help, "%sVersion %s\n", help, version);
-
-   sprintf(help, "%sRequired options:\n", help);
-   sprintf(help, "%s   [-inim fitsfile]  : comparison image to be differenced\n", help);
-   sprintf(help, "%s   [-tmplim fitsfile]: template image\n", help);
-   sprintf(help, "%s   [-outim fitsfile] : output difference image\n\n", help);
-
-   sprintf(help, "%sAdditional options:\n", help);
-   sprintf(help, "%s   [-tu tuthresh]    : upper valid data count, template (%.0f)\n", help, D_UTHRESH);
-   sprintf(help, "%s   [-tuk tucthresh]  : upper valid data count for kernel, template (tuthresh)\n", help);
-   sprintf(help, "%s   [-tl tlthresh]    : lower valid data count, template (%.0f)\n", help, D_LTHRESH);
-   sprintf(help, "%s   [-tg tgain]       : gain in template (%.0f)\n", help, D_GAIN);
-   sprintf(help, "%s   [-tr trdnoise]    : e- readnoise in template (%.0f)\n", help, D_RDNOISE);
-   sprintf(help, "%s   [-tp tpedestal]   : ADU pedestal in template (%.0f)\n", help, D_PEDESTAL);
-   sprintf(help, "%s   [-tni fitsfile]   : input template noise array (undef)\n", help);
-   sprintf(help, "%s   [-tmi fitsfile]   : input template mask image (undef)\n", help);
-
-   sprintf(help, "%s   [-iu iuthresh]    : upper valid data count, image (%.0f)\n", help, D_UTHRESH);
-   sprintf(help, "%s   [-iuk iucthresh]  : upper valid data count for kernel, image (iuthresh)\n", help);
-   sprintf(help, "%s   [-il ilthresh]    : lower valid data count, image (%.0f)\n", help, D_LTHRESH);
-   sprintf(help, "%s   [-ig igain]       : gain in image (%.0f)\n", help, D_GAIN);
-   sprintf(help, "%s   [-ir irdnoise]    : e- readnoise in image (%.0f)\n", help, D_RDNOISE);
-   sprintf(help, "%s   [-ip ipedestal]   : ADU pedestal in image (%.0f)\n", help, D_PEDESTAL);
-   sprintf(help, "%s   [-ini fitsfile]   : input image noise array (undef)\n", help);
-   sprintf(help, "%s   [-imi fitsfile]   : input image mask image (undef)\n\n", help);
-
-   sprintf(help, "%s   [-ki fitsfile]    : use kernel table in image header (undef)\n", help);
-   sprintf(help, "%s   [-r rkernel]      : convolution kernel half width (%d)\n", help, hwKernel);
-   sprintf(help, "%s   [-kcs step]       : size of step for spatial convolution (2*rkernel + 1)\n", help);
-   sprintf(help, "%s   [-ft fitthresh]   : RMS threshold for good centroid in kernel fit (%.1f)\n", help, kerFitThresh);
-   sprintf(help, "%s   [-sft scale]      : scale fitthresh by this fraction if... (%.1f)\n", help, scaleFitThresh);
-   sprintf(help, "%s   [-nft fraction]   : this fraction of stamps are not filled (%.1f)\n", help, minFracGoodStamps);
-   
-   sprintf(help, "%s   [-mins spread]    : Fraction of kernel half width to spread input mask (%.1f)\n", help, kfSpreadMask1);
-   sprintf(help, "%s   [-mous spread]    : Ditto output mask, negative = no diffim masking (%.1f)\n", help, kfSpreadMask2);
-   sprintf(help, "%s   [-omi  fitsfile]  : Output bad pixel mask (undef)\n", help);
-   
-   sprintf(help, "%s   [-gd xmin xmax ymin ymax]\n", help);
-   sprintf(help, "%s                     : only use subsection of full image (full image)\n\n", help);
-   
-   sprintf(help, "%s   [-nrx xregion]    : number of image regions in x dimension (%d)\n", help, nRegX);
-   sprintf(help, "%s   [-nry yregion]    : number of image regions in y dimension (%d)\n", help, nRegY);
-   sprintf(help, "%s   -- OR --\n", help);
-   sprintf(help, "%s   [-rf regionfile]  : ascii file with image regions 'xmin:xmax,ymin:ymax'\n", help);
-   sprintf(help, "%s   -- OR --\n", help);
-   sprintf(help, "%s   [-rkw keyword num]: header 'keyword[0->(num-1)]' indicates valid regions\n\n", help);
-
-   sprintf(help, "%s   [-nsx xstamp]     : number of each region's stamps in x dimension (%d)\n", help, nStampX);
-   sprintf(help, "%s   [-nsy ystamp]     : number of each region's stamps in y dimension (%d)\n", help, nStampY);
-   sprintf(help, "%s   -- OR --\n", help);
-   sprintf(help, "%s   [-ssf stampfile]  : ascii file indicating substamp centers 'x y'\n", help);
-   sprintf(help, "%s   -- OR --\n", help);
-   sprintf(help, "%s   [-cmp cmpfile]    : .cmp file indicating substamp centers 'x y'\n\n", help);
-
-   sprintf(help, "%s   [-afssc find]     : autofind stamp centers so #=-nss when -ssf,-cmp (%d)\n", help, findSSC);
-   sprintf(help, "%s   [-nss substamps]  : number of centroids to use for each stamp (%d)\n", help, nKSStamps);
-   sprintf(help, "%s   [-rss radius]     : half width substamp to extract around each centroid (%d)\n\n", help, hwKSStamp);
-
-   sprintf(help, "%s   [-savexy file]    : save positions of stamps for convolution kernel (undef)\n", help);
-   
-   sprintf(help, "%s   [-c  toconvolve]  : force convolution on (t)emplate or (i)mage (undef)\n", help);
-   sprintf(help, "%s   [-n  normalize]   : normalize to (t)emplate, (i)mage, or (u)nconvolved (%s)\n", help, photNormalize);
-   sprintf(help, "%s   [-fom figmerit]   : (v)ariance, (s)igma or (h)istogram convolution merit (%s)\n", help, figMerit);
-   sprintf(help, "%s   [-sconv]          : all regions convolved in same direction (%d)\n", help, sameConv);
-   
-   sprintf(help, "%s   [-ko kernelorder] : spatial order of kernel variation within region (%d)\n", help, kerOrder);
-   sprintf(help, "%s   [-bgo bgorder]    : spatial order of background variation within region (%d)\n", help, bgOrder);
-   sprintf(help, "%s   [-ssig statsig]   : threshold for sigma clipping statistics  (%.1f)\n", help, statSig);
-   sprintf(help, "%s   [-ks badkernelsig]: high sigma rejection for bad stamps in kernel fit (%.1f)\n", help, kerSigReject);
-   sprintf(help, "%s   [-kfm kerfracmask]: fraction of abs(kernel) sum for ok pixel (%.3f)\n", help, kerFracMask);
-   sprintf(help, "%s   [-okn]            : rescale noise for 'ok' pixels (%d)\n", help, rescaleOK);
-   sprintf(help, "%s   [-fi fill]        : value for invalid (bad) pixels (%.1e)\n", help, fillVal);
-   sprintf(help, "%s   [-fin fill]       : noise image only fillvalue (%.1e)\n", help, fillValNoise);
-   sprintf(help, "%s   [-convvar]        : convolve variance not noise (%d)\n\n", help, convolveVariance);
-   
-   sprintf(help, "%s   [-oni fitsfile]   : output noise image (undef)\n", help);
-   sprintf(help, "%s   [-ond fitsfile]   : output noise scaled difference image (undef)\n", help);
-   sprintf(help, "%s   [-nim]            : add noise image as layer to sub image (%d)\n", help, inclNoiseImage);
-   sprintf(help, "%s   [-ndm]            : add noise-scaled sub image as layer to sub image (%d)\n\n", help, inclSigmaImage);
-   sprintf(help, "%s   [-oci fitsfile]   : output convolved image (undef)\n", help);
-   sprintf(help, "%s   [-cim]            : add convolved image as layer to sub image (%d)\n\n", help, inclConvImage);
-   
-   sprintf(help, "%s   [-allm]           : output all possible image layers\n\n", help);
-
-   sprintf(help, "%s   [-nc]             : do not clobber output image (%d)\n", help, noClobber);
-   sprintf(help, "%s   [-hki]            : print extensive kernel info to output image header (%d)\n\n", help, doKerInfo);
-   sprintf(help, "%s   [-oki fitsfile]   : new fitsfile with kernel info (under)\n\n", help);
-   sprintf(help, "%s   [-sht]            : output images 16 bitpix int, vs -32 bitpix float (%d)\n", help, outShort);
-   sprintf(help, "%s   [-obs bscale]     : if -sht, output image BSCALE, overrides -inim (%.1f)\n", help, D_OUTBSCALE);
-   sprintf(help, "%s   [-obz bzero]      : if -sht, output image BZERO , overrides -inim (%.1f)\n", help, D_OUTBZERO);
-   sprintf(help, "%s   [-nsht]           : output noise image 16 bitpix int, vs -32 bitpix float (%d)\n", help, outNShort);
-   sprintf(help, "%s   [-nbs bscale]     : noise image only BSCALE, overrides -obs (%.1f)\n", help, D_OUTBSCALE);
-   sprintf(help, "%s   [-nbz bzero]      : noise image only BZERO,  overrides -obz (%.1f)\n\n", help, D_OUTBZERO);
-
-   sprintf(help, "%s   [-ng  ngauss degree0 sigma0 .. degreeN sigmaN]\n", help);
-   sprintf(help, "%s                     : ngauss = number of gaussians which compose kernel (%d)\n", help, ngauss);
-   sprintf(help, "%s                     : degree = degree of polynomial associated with gaussian #\n", help);
-   sprintf(help, "%s                                (%d %d %d)\n", help, D_DEG_GAUSS1, D_DEG_GAUSS2, D_DEG_GAUSS3);
-   sprintf(help, "%s                     : sigma  = width of gaussian #\n", help);
-   sprintf(help, "%s                                (%.2f %.2f %.2f)\n", help, D_SIG_GAUSS1, D_SIG_GAUSS2, D_SIG_GAUSS3);
-   sprintf(help, "%s                     : N = 0 .. ngauss - 1\n\n", help);
-   sprintf(help, "%s                     : (%d %d %.2f %d %.2f %d %.2f\n", help, ngauss, D_DEG_GAUSS1, D_SIG_GAUSS1, D_DEG_GAUSS2, D_SIG_GAUSS2, D_DEG_GAUSS3, D_SIG_GAUSS3);
-
-   sprintf(help, "%s   [-pca nk k0.fits ... n(k-1).fits]\n", help);
-   sprintf(help, "%s                     : nk      = number of input basis functions\n", help);
-   sprintf(help, "%s                     : k?.fits = name of fitsfile holding basis function\n", help);
-   sprintf(help, "%s                     : Since this uses input basis functions, it will fix :\n", help);
-   sprintf(help, "%s                     :    hwKernel \n", help);
-   sprintf(help, "%s                     :    \n", help);
-   
-   sprintf(help, "%s   [-v] verbosity    : level of verbosity, 0-2 (%d)\n", help, verbose);
-
-   sprintf(help, "%s NOTE: Fits header params will be added to the difference image\n", help);
-   sprintf(help, "%s       COMMAND             (what was called on the command line)\n", help);
-   sprintf(help, "%s       NREGION             (number of regions in image)\n", help);
-   sprintf(help, "%s       PHOTNORM            (to which system the difference image is normalized)\n", help);
-   sprintf(help, "%s       TARGET              (image which was differenced)\n", help);
-   sprintf(help, "%s       TEMPLATE            (template for the difference imaging)\n", help);
-   sprintf(help, "%s       DIFFIM              (output difference image)\n", help);
-   sprintf(help, "%s       MASKVAL             (value for masked pixels)\n", help);
-   sprintf(help, "%s       REGION\?\?            (IRAF-format limits for each region in the image)\n", help);
-   sprintf(help, "%s       CONVOL\?\?            (which image was convolved for each region)\n", help);
-   sprintf(help, "%s       KSUM\?\?              (sum of the convolution kernel for each region)", help);
-
-   /* read in command options */
    if (argc < 2) {
-      fprintf(stderr, "%s\n", help);
-      exit(1);
+	   fprintf(stderr, "Usage:  hotpants [options]\n");
+   
+	   fprintf(stderr, "Version %s\n", version);
+
+	   fprintf(stderr, "Required options:\n");
+	   fprintf(stderr, "   [-inim fitsfile]  : comparison image to be differenced\n");
+	   fprintf(stderr, "   [-tmplim fitsfile]: template image\n");
+	   fprintf(stderr, "   [-outim fitsfile] : output difference image\n\n");
+
+	   fprintf(stderr, "Additional options:\n");
+	   fprintf(stderr, "   [-tu tuthresh]    : upper valid data count, template (%.0f)\n", D_UTHRESH);
+	   fprintf(stderr, "   [-tuk tucthresh]  : upper valid data count for kernel, template (tuthresh)\n");
+	   fprintf(stderr, "   [-tl tlthresh]    : lower valid data count, template (%.0f)\n", D_LTHRESH);
+	   fprintf(stderr, "   [-tg tgain]       : gain in template (%.0f)\n", D_GAIN);
+	   fprintf(stderr, "   [-tr trdnoise]    : e- readnoise in template (%.0f)\n", D_RDNOISE);
+	   fprintf(stderr, "   [-tp tpedestal]   : ADU pedestal in template (%.0f)\n", D_PEDESTAL);
+	   fprintf(stderr, "   [-tni fitsfile]   : input template noise array (undef)\n");
+	   fprintf(stderr, "   [-tmi fitsfile]   : input template mask image (undef)\n");
+
+	   fprintf(stderr, "   [-iu iuthresh]    : upper valid data count, image (%.0f)\n", D_UTHRESH);
+	   fprintf(stderr, "   [-iuk iucthresh]  : upper valid data count for kernel, image (iuthresh)\n");
+	   fprintf(stderr, "   [-il ilthresh]    : lower valid data count, image (%.0f)\n", D_LTHRESH);
+	   fprintf(stderr, "   [-ig igain]       : gain in image (%.0f)\n", D_GAIN);
+	   fprintf(stderr, "   [-ir irdnoise]    : e- readnoise in image (%.0f)\n", D_RDNOISE);
+	   fprintf(stderr, "   [-ip ipedestal]   : ADU pedestal in image (%.0f)\n", D_PEDESTAL);
+	   fprintf(stderr, "   [-ini fitsfile]   : input image noise array (undef)\n");
+	   fprintf(stderr, "   [-imi fitsfile]   : input image mask image (undef)\n\n");
+
+	   fprintf(stderr, "   [-ki fitsfile]    : use kernel table in image header (undef)\n");
+	   fprintf(stderr, "   [-r rkernel]      : convolution kernel half width (%d)\n", hwKernel);
+	   fprintf(stderr, "   [-kcs step]       : size of step for spatial convolution (2*rkernel + 1)\n");
+	   fprintf(stderr, "   [-ft fitthresh]   : RMS threshold for good centroid in kernel fit (%.1f)\n", kerFitThresh);
+	   fprintf(stderr, "   [-sft scale]      : scale fitthresh by this fraction if... (%.1f)\n", scaleFitThresh);
+	   fprintf(stderr, "   [-nft fraction]   : this fraction of stamps are not filled (%.1f)\n", minFracGoodStamps);
+   
+	   fprintf(stderr, "   [-mins spread]    : Fraction of kernel half width to spread input mask (%.1f)\n", kfSpreadMask1);
+	   fprintf(stderr, "   [-mous spread]    : Ditto output mask, negative = no diffim masking (%.1f)\n", kfSpreadMask2);
+	   fprintf(stderr, "   [-omi  fitsfile]  : Output bad pixel mask (undef)\n");
+   
+	   fprintf(stderr, "   [-gd xmin xmax ymin ymax]\n");
+	   fprintf(stderr, "                     : only use subsection of full image (full image)\n\n");
+   
+	   fprintf(stderr, "   [-nrx xregion]    : number of image regions in x dimension (%d)\n", nRegX);
+	   fprintf(stderr, "   [-nry yregion]    : number of image regions in y dimension (%d)\n", nRegY);
+	   fprintf(stderr, "   -- OR --\n");
+	   fprintf(stderr, "   [-rf regionfile]  : ascii file with image regions 'xmin:xmax,ymin:ymax'\n");
+	   fprintf(stderr, "   -- OR --\n");
+	   fprintf(stderr, "   [-rkw keyword num]: header 'keyword[0->(num-1)]' indicates valid regions\n\n");
+
+	   fprintf(stderr, "   [-nsx xstamp]     : number of each region's stamps in x dimension (%d)\n", nStampX);
+	   fprintf(stderr, "   [-nsy ystamp]     : number of each region's stamps in y dimension (%d)\n", nStampY);
+	   fprintf(stderr, "   -- OR --\n");
+	   fprintf(stderr, "   [-ssf stampfile]  : ascii file indicating substamp centers 'x y'\n");
+	   fprintf(stderr, "   -- OR --\n");
+	   fprintf(stderr, "   [-cmp cmpfile]    : .cmp file indicating substamp centers 'x y'\n\n");
+
+	   fprintf(stderr, "   [-afssc find]     : autofind stamp centers so #=-nss when -ssf,-cmp (%d)\n", findSSC);
+	   fprintf(stderr, "   [-nss substamps]  : number of centroids to use for each stamp (%d)\n", nKSStamps);
+	   fprintf(stderr, "   [-rss radius]     : half width substamp to extract around each centroid (%d)\n\n", hwKSStamp);
+
+	   fprintf(stderr, "   [-savexy file]    : save positions of stamps for convolution kernel (undef)\n");
+   
+	   fprintf(stderr, "   [-c  toconvolve]  : force convolution on (t)emplate or (i)mage (undef)\n");
+	   fprintf(stderr, "   [-n  normalize]   : normalize to (t)emplate, (i)mage, or (u)nconvolved (%s)\n", photNormalize);
+	   fprintf(stderr, "   [-fom figmerit]   : (v)ariance, (s)igma or (h)istogram convolution merit (%s)\n", figMerit);
+	   fprintf(stderr, "   [-sconv]          : all regions convolved in same direction (%d)\n", sameConv);
+   
+	   fprintf(stderr, "   [-ko kernelorder] : spatial order of kernel variation within region (%d)\n", kerOrder);
+	   fprintf(stderr, "   [-bgo bgorder]    : spatial order of background variation within region (%d)\n", bgOrder);
+	   fprintf(stderr, "   [-ssig statsig]   : threshold for sigma clipping statistics  (%.1f)\n", statSig);
+	   fprintf(stderr, "   [-ks badkernelsig]: high sigma rejection for bad stamps in kernel fit (%.1f)\n", kerSigReject);
+	   fprintf(stderr, "   [-kfm kerfracmask]: fraction of abs(kernel) sum for ok pixel (%.3f)\n", kerFracMask);
+	   fprintf(stderr, "   [-okn]            : rescale noise for 'ok' pixels (%d)\n", rescaleOK);
+	   fprintf(stderr, "   [-fi fill]        : value for invalid (bad) pixels (%.1e)\n", fillVal);
+	   fprintf(stderr, "   [-fin fill]       : noise image only fillvalue (%.1e)\n", fillValNoise);
+	   fprintf(stderr, "   [-convvar]        : convolve variance not noise (%d)\n\n", convolveVariance);
+   
+	   fprintf(stderr, "   [-oni fitsfile]   : output noise image (undef)\n");
+	   fprintf(stderr, "   [-ond fitsfile]   : output noise scaled difference image (undef)\n");
+	   fprintf(stderr, "   [-nim]            : add noise image as layer to sub image (%d)\n", inclNoiseImage);
+	   fprintf(stderr, "   [-ndm]            : add noise-scaled sub image as layer to sub image (%d)\n\n", inclSigmaImage);
+	   fprintf(stderr, "   [-oci fitsfile]   : output convolved image (undef)\n");
+	   fprintf(stderr, "   [-cim]            : add convolved image as layer to sub image (%d)\n\n", inclConvImage);
+   
+	   fprintf(stderr, "   [-allm]           : output all possible image layers\n\n");
+
+	   fprintf(stderr, "   [-nc]             : do not clobber output image (%d)\n", noClobber);
+	   fprintf(stderr, "   [-hki]            : print extensive kernel info to output image header (%d)\n\n", doKerInfo);
+	   fprintf(stderr, "   [-oki fitsfile]   : new fitsfile with kernel info (under)\n\n");
+	   fprintf(stderr, "   [-sht]            : output images 16 bitpix int, vs -32 bitpix float (%d)\n", outShort);
+	   fprintf(stderr, "   [-obs bscale]     : if -sht, output image BSCALE, overrides -inim (%.1f)\n", D_OUTBSCALE);
+	   fprintf(stderr, "   [-obz bzero]      : if -sht, output image BZERO , overrides -inim (%.1f)\n", D_OUTBZERO);
+	   fprintf(stderr, "   [-nsht]           : output noise image 16 bitpix int, vs -32 bitpix float (%d)\n", outNShort);
+	   fprintf(stderr, "   [-nbs bscale]     : noise image only BSCALE, overrides -obs (%.1f)\n", D_OUTBSCALE);
+	   fprintf(stderr, "   [-nbz bzero]      : noise image only BZERO,  overrides -obz (%.1f)\n\n", D_OUTBZERO);
+
+	   fprintf(stderr, "   [-ng  ngauss degree0 sigma0 .. degreeN sigmaN]\n");
+	   fprintf(stderr, "                     : ngauss = number of gaussians which compose kernel (%d)\n", ngauss);
+	   fprintf(stderr, "                     : degree = degree of polynomial associated with gaussian #\n");
+	   fprintf(stderr, "                                (%d %d %d)\n", D_DEG_GAUSS1, D_DEG_GAUSS2, D_DEG_GAUSS3);
+	   fprintf(stderr, "                     : sigma  = width of gaussian #\n");
+	   fprintf(stderr, "                                (%.2f %.2f %.2f)\n", D_SIG_GAUSS1, D_SIG_GAUSS2, D_SIG_GAUSS3);
+	   fprintf(stderr, "                     : N = 0 .. ngauss - 1\n\n");
+	   fprintf(stderr, "                     : (%d %d %.2f %d %.2f %d %.2f\n", ngauss, D_DEG_GAUSS1, D_SIG_GAUSS1, D_DEG_GAUSS2, D_SIG_GAUSS2, D_DEG_GAUSS3, D_SIG_GAUSS3);
+
+	   fprintf(stderr, "   [-pca nk k0.fits ... n(k-1).fits]\n");
+	   fprintf(stderr, "                     : nk      = number of input basis functions\n");
+	   fprintf(stderr, "                     : k?.fits = name of fitsfile holding basis function\n");
+	   fprintf(stderr, "                     : Since this uses input basis functions, it will fix :\n");
+	   fprintf(stderr, "                     :    hwKernel \n");
+	   fprintf(stderr, "                     :    \n");
+   
+	   fprintf(stderr, "   [-v] verbosity    : level of verbosity, 0-2 (%d)\n", verbose);
+
+	   fprintf(stderr, " NOTE: Fits header params will be added to the difference image\n");
+	   fprintf(stderr, "       COMMAND             (what was called on the command line)\n");
+	   fprintf(stderr, "       NREGION             (number of regions in image)\n");
+	   fprintf(stderr, "       PHOTNORM            (to which system the difference image is normalized)\n");
+	   fprintf(stderr, "       TARGET              (image which was differenced)\n");
+	   fprintf(stderr, "       TEMPLATE            (template for the difference imaging)\n");
+	   fprintf(stderr, "       DIFFIM              (output difference image)\n");
+	   fprintf(stderr, "       MASKVAL             (value for masked pixels)\n");
+	   fprintf(stderr, "       REGION\?\?            (IRAF-format limits for each region in the image)\n");
+	   fprintf(stderr, "       CONVOL\?\?            (which image was convolved for each region)\n");
+	   fprintf(stderr, "       KSUM\?\?              (sum of the convolution kernel for each region)");
+
+	   exit(1);
    }
    
    for (iarg=1; iarg < argc; iarg++) {
