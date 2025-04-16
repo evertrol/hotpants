@@ -1,17 +1,20 @@
 #############################################################
-# TO BE CHANGED BY EACH USER TO POINT TO include/ AND lib/ 
-# DIRS HOLDING CFITSIO *.h AND libcfitsio IF THEY ARE NOT IN 
+# TO BE CHANGED BY EACH USER TO POINT TO include/ AND lib/
+# DIRS HOLDING CFITSIO *.h AND libcfitsio IF THEY ARE NOT IN
 # THE STANDARD PLACES
-# 
+#
 
-CFITSIOINCDIR =  ../../cfitsio/include
-LIBDIR        =  ../../cfitsio/lib
+CFITSIODIR =
+
+INCDIR = $(CFITSIODIR)/include
+LIBDIR = $(CFITSIODIR)/lib
+
 
 #
 #
 #############################################################
 # COMPILATION OPTIONS BELOW
-# 
+#
 
 # another good memory checker is valgrind : http://valgrind.kde.org/index.html
 # valgrind --tool=memcheck hotpants
@@ -20,58 +23,60 @@ LIBDIR        =  ../../cfitsio/lib
 # LIBS  = -L$(LIBDIR) -lm -lcfitsio -lefence
 
 # for profiling with gprof
-# COPTS = -pg -fprofile-arcs -funroll-loops -O3 -ansi -pedantic-errors -Wall -I$(CFITSIOINCDIR) 
+# CFLAGS = -pg -fprofile-arcs -funroll-loops -O3 -ansi -pedantic-errors -Wall -I$(INCDIR)
 
 # for gdbugging
-#COPTS = -g3 -funroll-loops -O3 -ansi -pedantic-errors -Wall -I$(CFITSIOINCDIR) 
+#CFLAGS = -g3 -funroll-loops -O3 -ansi -pedantic-errors -Wall -I$(INCDIR)
 
 # standard usage
 # recently added -std=c99 after a bug report
-COPTS = -funroll-loops -O3 -ansi -std=c99 -pedantic-errors -Wall -I$(CFITSIOINCDIR) -D_GNU_SOURCE
-LIBS  = -L$(LIBDIR) -lm -lcfitsio
+CFLAGS = -funroll-loops -O3 -std=c99 -pedantic-errors -Wall -I$(INCDIR)
+LIBS = -L$(LIBDIR) -lm -lcfitsio
 
 # compiler
-CC    = gcc 
+CC = gcc
 
 #
 #
-############################################################# 
+#############################################################
 # BELOW SHOULD BE OK, UNLESS YOU WANT TO COPY THE EXECUTABLES
 # SOMEPLACE AFTER THEY ARE BUILT eg. hotpants
 #
 
-STDH  = functions.h globals.h defaults.h
-ALL   = main.o vargs.o alard.o functions.o 
+STDH = functions.h globals.h defaults.h
+ALL = main.o vargs.o alard.o functions.o
 
-all:	hotpants extractkern maskim
+.PHONY: all clean
+
+all: hotpants extractkern maskim
 
 hotpants: $(ALL)
-	$(CC) $(ALL) -o hotpants $(LIBS) $(COPTS)
+	$(CC) $(ALL) -o hotpants $(LIBS) $(CFLAGS)
 #	cp hotpants ../../bin/$(ARCH)
 
 main.o: $(STDH) main.c
-	$(CC) $(COPTS)  -c main.c
+	$(CC) $(CFLAGS)  -c main.c
 
 alard.o: $(STDH) alard.c
-	$(CC) $(COPTS)  -c alard.c
+	$(CC) $(CFLAGS)  -c alard.c
 
 functions.o: $(STDH) functions.c
-	$(CC) $(COPTS)  -c functions.c
+	$(CC) $(CFLAGS)  -c functions.c
 
 vargs.o: $(STDH) vargs.c
-	$(CC) $(COPTS)  -c vargs.c
+	$(CC) $(CFLAGS)  -c vargs.c
 
-extractkern : extractkern.o 
-	$(CC) extractkern.o -o extractkern $(LIBS) $(COPTS)
+extractkern : extractkern.o
+	$(CC) extractkern.o -o extractkern $(LIBS) $(CFLAGS)
 
 extractkern.o : $(STDH) extractkern.c
-	$(CC) $(COPTS)  -c extractkern.c
+	$(CC) $(CFLAGS)  -c extractkern.c
 
 maskim : maskim.o
-	$(CC) maskim.o -o maskim $(LIBS) $(COPTS)
+	$(CC) maskim.o -o maskim $(LIBS) $(CFLAGS)
 
 maskim.o: $(STDH) maskim.c
-	$(CC) $(COPTS)  -c maskim.c
+	$(CC) $(CFLAGS)  -c maskim.c
 
 clean :
 	rm -f *.o
