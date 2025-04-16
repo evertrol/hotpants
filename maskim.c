@@ -78,15 +78,15 @@ int main(int argc, char **argv)
    if ( !(inim) ) {
       fprintf(stderr, "FATAL ERROR inim is required command line option\n");
       exit(1);
-   }  
+   }
    if ( !(maskim) ) {
       fprintf(stderr, "FATAL ERROR maskim is required command line option\n");
       exit(1);
-   }  
+   }
    if ( !(outim) ) {
       fprintf(stderr, "FATAL ERROR outim is required command line option\n");
       exit(1);
-   }  
+   }
 
    /* open up, get bitpix, # dimensions, image size */
    if ( fits_open_file(&iPtr, inim, 0, &status) ||
@@ -102,11 +102,11 @@ int main(int argc, char **argv)
    assert(iNaxes[1] == mNaxes[1]);
 
    nPix = iNaxes[0]*iNaxes[1];
-   
+
    iRData = (float *)realloc(iRData, nPix*sizeof(float));
    mRData = (int *)realloc(mRData, nPix*sizeof(int));
    if (iRData == NULL || mRData == NULL) {
-      fprintf(stderr, "Cannot Allocate Standard Data Arrays\n"); 
+      fprintf(stderr, "Cannot Allocate Standard Data Arrays\n");
       exit (1);
    }
    memset(iRData,   0.0, nPix*sizeof(float));
@@ -121,14 +121,14 @@ int main(int argc, char **argv)
    for (i = nPix; i--; )
       if (mRData[i] & mask)
 	 iRData[i] = fillVal;
-   
+
    /* reuse mptr and help */
    sprintf(help, "!%s", outim);
    if (fits_create_template(&mPtr, help, inim, &status) ||
        fits_write_img(mPtr, TFLOAT, 1, nPix, iRData, &status) ||
        fits_close_file(mPtr, &status) ||
        fits_close_file(iPtr, &status))
-      printError(status);      
+      printError(status);
 
    free(iRData);
    free(mRData);

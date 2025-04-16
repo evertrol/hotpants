@@ -8,12 +8,12 @@
 #include "functions.h"
 
 /*
-  
+
   Set defaults for global variables, parse any command line arguments,
   and do some basic insanity checks.
 
   08/20/01 acbecker@physics.bell-labs.com
-  
+
 */
 
 // Indicate to the compiler that these variables, used inside vargs(), are global
@@ -72,10 +72,10 @@ void vargs(int argc, char *argv[]) {
    kernelImIn  = NULL;
    kernelImOut = NULL;
    outMask     = NULL;
-   
+
    /* nullify arrays of pointers */
    mRData        = NULL;
-   
+
    check_stack   = NULL;
    filter_x      = NULL;
    filter_y      = NULL;
@@ -86,7 +86,7 @@ void vargs(int argc, char *argv[]) {
    kernel        = NULL;
    check_mat     = NULL;
    check_vec     = NULL;
-   
+
    ngauss      = D_NGAUSS;
    deg_fixe    = (int *)calloc(ngauss, sizeof(int));
    deg_fixe[0] = D_DEG_GAUSS1;
@@ -124,9 +124,9 @@ void vargs(int argc, char *argv[]) {
    kerFitThresh    = D_KFITTHRESH;
    minFracGoodStamps = D_NFITTHRESH;
    scaleFitThresh  = D_SFITTHRESH;
-   
+
    kfSpreadMask1   = D_INMASKFSPREAD;
-   kfSpreadMask2   = D_OUMASKFSPREAD;   
+   kfSpreadMask2   = D_OUMASKFSPREAD;
    nRegX           = D_NREGIONS;
    nRegY           = D_NREGIONS;
    nStampY         = D_NSTAMPS;
@@ -161,10 +161,10 @@ void vargs(int argc, char *argv[]) {
 
    convolveVariance= D_CONVVAR;
    usePCA          = D_USEPCA;
-   
+
    if (argc < 2) {
 	   fprintf(stderr, "Usage:  hotpants [options]\n");
-   
+
 	   fprintf(stderr, "Version %s\n", version);
 
 	   fprintf(stderr, "Required options:\n");
@@ -197,14 +197,14 @@ void vargs(int argc, char *argv[]) {
 	   fprintf(stderr, "   [-ft fitthresh]   : RMS threshold for good centroid in kernel fit (%.1f)\n", kerFitThresh);
 	   fprintf(stderr, "   [-sft scale]      : scale fitthresh by this fraction if... (%.1f)\n", scaleFitThresh);
 	   fprintf(stderr, "   [-nft fraction]   : this fraction of stamps are not filled (%.1f)\n", minFracGoodStamps);
-   
+
 	   fprintf(stderr, "   [-mins spread]    : Fraction of kernel half width to spread input mask (%.1f)\n", kfSpreadMask1);
 	   fprintf(stderr, "   [-mous spread]    : Ditto output mask, negative = no diffim masking (%.1f)\n", kfSpreadMask2);
 	   fprintf(stderr, "   [-omi  fitsfile]  : Output bad pixel mask (undef)\n");
-   
+
 	   fprintf(stderr, "   [-gd xmin xmax ymin ymax]\n");
 	   fprintf(stderr, "                     : only use subsection of full image (full image)\n\n");
-   
+
 	   fprintf(stderr, "   [-nrx xregion]    : number of image regions in x dimension (%d)\n", nRegX);
 	   fprintf(stderr, "   [-nry yregion]    : number of image regions in y dimension (%d)\n", nRegY);
 	   fprintf(stderr, "   -- OR --\n");
@@ -224,12 +224,12 @@ void vargs(int argc, char *argv[]) {
 	   fprintf(stderr, "   [-rss radius]     : half width substamp to extract around each centroid (%d)\n\n", hwKSStamp);
 
 	   fprintf(stderr, "   [-savexy file]    : save positions of stamps for convolution kernel (undef)\n");
-   
+
 	   fprintf(stderr, "   [-c  toconvolve]  : force convolution on (t)emplate or (i)mage (undef)\n");
 	   fprintf(stderr, "   [-n  normalize]   : normalize to (t)emplate, (i)mage, or (u)nconvolved (%s)\n", photNormalize);
 	   fprintf(stderr, "   [-fom figmerit]   : (v)ariance, (s)igma or (h)istogram convolution merit (%s)\n", figMerit);
 	   fprintf(stderr, "   [-sconv]          : all regions convolved in same direction (%d)\n", sameConv);
-   
+
 	   fprintf(stderr, "   [-ko kernelorder] : spatial order of kernel variation within region (%d)\n", kerOrder);
 	   fprintf(stderr, "   [-bgo bgorder]    : spatial order of background variation within region (%d)\n", bgOrder);
 	   fprintf(stderr, "   [-ssig statsig]   : threshold for sigma clipping statistics  (%.1f)\n", statSig);
@@ -239,14 +239,14 @@ void vargs(int argc, char *argv[]) {
 	   fprintf(stderr, "   [-fi fill]        : value for invalid (bad) pixels (%.1e)\n", fillVal);
 	   fprintf(stderr, "   [-fin fill]       : noise image only fillvalue (%.1e)\n", fillValNoise);
 	   fprintf(stderr, "   [-convvar]        : convolve variance not noise (%d)\n\n", convolveVariance);
-   
+
 	   fprintf(stderr, "   [-oni fitsfile]   : output noise image (undef)\n");
 	   fprintf(stderr, "   [-ond fitsfile]   : output noise scaled difference image (undef)\n");
 	   fprintf(stderr, "   [-nim]            : add noise image as layer to sub image (%d)\n", inclNoiseImage);
 	   fprintf(stderr, "   [-ndm]            : add noise-scaled sub image as layer to sub image (%d)\n\n", inclSigmaImage);
 	   fprintf(stderr, "   [-oci fitsfile]   : output convolved image (undef)\n");
 	   fprintf(stderr, "   [-cim]            : add convolved image as layer to sub image (%d)\n\n", inclConvImage);
-   
+
 	   fprintf(stderr, "   [-allm]           : output all possible image layers\n\n");
 
 	   fprintf(stderr, "   [-nc]             : do not clobber output image (%d)\n", noClobber);
@@ -274,7 +274,7 @@ void vargs(int argc, char *argv[]) {
 	   fprintf(stderr, "                     : Since this uses input basis functions, it will fix :\n");
 	   fprintf(stderr, "                     :    hwKernel \n");
 	   fprintf(stderr, "                     :    \n");
-   
+
 	   fprintf(stderr, "   [-v] verbosity    : level of verbosity, 0-2 (%d)\n", verbose);
 
 	   fprintf(stderr, " NOTE: Fits header params will be added to the difference image\n");
@@ -291,10 +291,10 @@ void vargs(int argc, char *argv[]) {
 
 	   exit(1);
    }
-   
+
    for (iarg=1; iarg < argc; iarg++) {
       if (argv[iarg][0]=='-') {
-         
+
          if (strcasecmp(argv[iarg]+1,"inim")==0) {
             image = argv[++iarg];
          } else if (strcasecmp(argv[iarg]+1,"tmplim")==0) {
@@ -317,7 +317,7 @@ void vargs(int argc, char *argv[]) {
             tNoiseIm = argv[++iarg];
          } else if (strcasecmp(argv[iarg]+1,"tmi")==0) {
             tMaskIm = argv[++iarg];
-            
+
          } else if (strcasecmp(argv[iarg]+1,"iu")==0) {
             sscanf(argv[++iarg], "%f", &iUThresh);
          } else if (strcasecmp(argv[iarg]+1,"iuk")==0) {
@@ -455,7 +455,7 @@ void vargs(int argc, char *argv[]) {
 
 	    deg_fixe    = (int *)realloc(deg_fixe,      ngauss*sizeof(int));
 	    sigma_gauss = (float *)realloc(sigma_gauss, ngauss*sizeof(float));
-	    
+
 	    for (i = 0; i < ngauss; i++) {
 	       sscanf(argv[++iarg], "%d", &deg_fixe[i]);
 	       sscanf(argv[++iarg], "%f", &sigma_gauss[i]);
@@ -468,7 +468,7 @@ void vargs(int argc, char *argv[]) {
 	    PCA = (float **)malloc(ngauss*sizeof(float *));
 	    for (i = 0; i < ngauss; i++) {
 	       scrStr = argv[++iarg];
-	       
+
 	       if (fits_open_file(&kPtr, scrStr, 0, &status) ||
 		   fits_get_img_param(kPtr, MAXDIM, &kBitpix, &kNaxis, kNaxes, &status))
 		  printError(status);
@@ -478,15 +478,15 @@ void vargs(int argc, char *argv[]) {
 		  fwKernelPCA = kNaxes[0];
 	       else
 		  assert(fwKernelPCA == kNaxes[0]);
-	       
+
 	       fprintf(stderr, "   Reading in basis image %s\n", scrStr);
-	       
+
 	       PCA[i] = (float *)malloc(kNaxes[0]*kNaxes[1]*sizeof(float));
 	       if (fits_read_img_flt(kPtr, 0, 1, kNaxes[0]*kNaxes[1], 0, PCA[i], 0, &status) ||
 		   fits_close_file(kPtr, &status))
 		  printError(status);
 	    }
-	    
+
 	    /* hack to not break other parts of the code */
 	    deg_fixe    = (int *)realloc(deg_fixe,      ngauss*sizeof(int));
 	    sigma_gauss = (float *)realloc(sigma_gauss, ngauss*sizeof(float));
@@ -494,7 +494,7 @@ void vargs(int argc, char *argv[]) {
 	       deg_fixe[i]    =  0;
 	       sigma_gauss[i] = -1;
 	    }
-	    
+
          } else {
 	    fprintf(stderr, "Unknown option : %s\n", argv[iarg]);
 	    exit(1);
@@ -511,20 +511,20 @@ void vargs(int argc, char *argv[]) {
       fprintf(stderr, "%d %d %f\n", i, deg_fixe[i], sigma_gauss[i]);
    }
    */
-   
+
    /* check that the requested options make sense */
    if ( !(image) ) {
       fprintf(stderr, "FATAL ERROR inim : required command line option\n");
       exit(1);
-   }  
+   }
    if ( !(template) ) {
       fprintf(stderr, "FATAL ERROR tmplim : required command line option\n");
       exit(1);
-   }  
+   }
    if ( !(outim) ) {
       fprintf(stderr, "FATAL ERROR outim : required command line option\n");
       exit(1);
-   }  
+   }
 
    /* template thresholds and gain */
    if (tUThresh && (tUThresh <= 0)) {
@@ -543,7 +543,7 @@ void vargs(int argc, char *argv[]) {
       fprintf(stderr, "FATAL ERROR tr (%f) : cannot be negative (or zero)\n", tRdnoise);
       exit(1);
    }
-   
+
    /* image thresholds and gain */
    if (iUThresh && (iUThresh <= 0)) {
       fprintf(stderr, "FATAL ERROR iu (%f) : cannot be negative (or zero)\n", iUThresh);
@@ -561,7 +561,7 @@ void vargs(int argc, char *argv[]) {
       fprintf(stderr, "FATAL ERROR ir (%f) : cannot be negative (or zero)\n", iRdnoise);
       exit(1);
    }
-   
+
    /* kernel fit pars */
    if (hwKernel <= 0) {
       fprintf(stderr, "FATAL ERROR r (%d) : cannot be negative (or zero)\n", hwKernel);
@@ -620,7 +620,7 @@ void vargs(int argc, char *argv[]) {
          exit(1);
       }
    }
-   
+
    /* substamp properties */
    if (nKSStamps < 0) {
       fprintf(stderr, "FATAL ERROR nss (%d) : cannot be negative\n", nKSStamps);
@@ -666,18 +666,18 @@ void vargs(int argc, char *argv[]) {
    if (outBscale && (outBscale == 0.)) {
       fprintf(stderr, "FATAL ERROR obs (%f) : cannot be zero\n", outBscale);
       exit(1);
-   }      
-   
+   }
+
    if (outNiBscale && (outNiBscale == 0.)) {
       fprintf(stderr, "FATAL ERROR nbs (%f) : cannot be zero\n", outNiBscale);
       exit(1);
-   }      
+   }
 
    /* PCA */
    if (usePCA) {
       hwKernel = fwKernelPCA / 2;
       fprintf(stderr, "ATTN : size of input kernel images fixes hwKernel to %d\n", hwKernel);
    }
-   
+
    return;
 }

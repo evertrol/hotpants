@@ -27,13 +27,13 @@
 #define MAXVAL        1e10
 #define ZEROVAL       1e-10
 
-#define D_NGAUSS      3       
-#define D_DEG_GAUSS1  6       
-#define D_DEG_GAUSS2  4       
-#define D_DEG_GAUSS3  2       
-#define D_SIG_GAUSS1  0.7     
-#define D_SIG_GAUSS2  1.5     
-#define D_SIG_GAUSS3  3.0     
+#define D_NGAUSS      3
+#define D_DEG_GAUSS1  6
+#define D_DEG_GAUSS2  4
+#define D_DEG_GAUSS3  2
+#define D_SIG_GAUSS1  0.7
+#define D_SIG_GAUSS2  1.5
+#define D_SIG_GAUSS3  3.0
 #define STAT_SAMP     10        /* desired number of stamp stat squares in x,y */
 
 
