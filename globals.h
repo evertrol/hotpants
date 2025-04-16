@@ -1,3 +1,6 @@
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
 typedef struct
 {
    int       x0,y0;       /* origin of stamp in region coords*/
@@ -83,3 +86,5 @@ extern char       xyfilename[1000];
 extern int        savexyflag;
 extern float      *xcmp,*ycmp;
 extern int        Ncmp;
+
+#endif  // GLOBALS_H

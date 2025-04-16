@@ -1,3 +1,6 @@
+#ifndef DEFAULTS_H
+#define DEFAULTS_H
+
 #define D  if (1);
 #define DD if (0);
 
@@ -79,3 +82,5 @@
 #define D_VERBOSE       1       /* levels of verbosity, 0, 1, 2 */
 #define D_CONVVAR       0       /* instead of convolving noise, convolve variance.  ker vs ker**2 */
 #define D_USEPCA        0       /* use input basis functions for kernel; derived from PCA */
+
+#endif  // DEFAULTS_H

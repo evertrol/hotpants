@@ -1,3 +1,6 @@
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+
 #include <fitsio.h>
 
 /* Alard.c */
@@ -97,3 +100,5 @@ int          jtdotri(int, int, double *, double [], double [], double, float *, 
 void         jtsprinkle(int, int, double *, double, double, double, double,
 			double, float, float *, int []);
 */
+
+#endif  // FUNCTIONS_H
