@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<string.h>
+#include<strings.h>
 #include<math.h>
 #include<stdlib.h>
 #include<fitsio.h>

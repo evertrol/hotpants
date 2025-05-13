@@ -1,3 +1,8 @@
+#ifndef _POSIX_C_SOURCE
+// For gethostname prototype inclusion
+#define _POSIX_C_SOURCE 200112L
+#endif
+
 #include<stdio.h>
 #include<string.h>
 #include<math.h>
@@ -1865,7 +1870,7 @@ int main(int argc,char *argv[]) {
 
     sprintf(hKeyword, "DIFFCMD");
     for (i = 0; i < argc; i++)
-	    strlcat(hInfo, argv[i], 2048);
+	    strncat(hInfo, argv[i], 2047);
     fits_write_key_longstr(oPtr, hKeyword, hInfo, "", &status);
 
     fits_write_key_longstr(oPtr, "TARGET",   image,    "HOTPanTS : Input Image", &status);

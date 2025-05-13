@@ -34,10 +34,12 @@ CC =
 
 # standard usage
 # recently added -std=c99 after a bug report
-CFLAGS = -funroll-loops -O3 -std=c99 -pedantic-errors -Wall -I$(INCDIR)
+
+# Upped the C standard to c18
+CFLAGS = -funroll-loops -O3 -std=c18 -pedantic-errors -Wall -I$(INCDIR)
 LIBS = -L$(LIBDIR) -lm -lcfitsio
 
-#
+
 #
 #############################################################
 # BELOW SHOULD BE OK, UNLESS YOU WANT TO COPY THE EXECUTABLES

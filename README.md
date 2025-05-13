@@ -18,6 +18,10 @@ make
 and you should have a `hotpants` executable file in the directory, as
 well as `extractkern` and `maskim` executables.
 
+Note: if you get an error because of the `-std=c18` flag, your
+compiler may be old; you should be able to change the flag to
+`-std=c11` and compile it properly.
+
 
 # Hotpants
 
