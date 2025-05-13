@@ -1,6 +1,8 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+#include "globals.h"
+
 #include <fitsio.h>
 
 /* Alard.c */
