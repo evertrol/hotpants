@@ -10,7 +10,11 @@ INCDIR = $(CFITSIODIR)/include
 LIBDIR = $(CFITSIODIR)/lib
 
 
-#
+# Compiler
+CC =
+
+
+
 #
 #############################################################
 # COMPILATION OPTIONS BELOW
@@ -32,9 +36,6 @@ LIBDIR = $(CFITSIODIR)/lib
 # recently added -std=c99 after a bug report
 CFLAGS = -funroll-loops -O3 -std=c99 -pedantic-errors -Wall -I$(INCDIR)
 LIBS = -L$(LIBDIR) -lm -lcfitsio
-
-# compiler
-CC = gcc
 
 #
 #
